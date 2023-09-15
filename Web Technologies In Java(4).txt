@@ -1,0 +1,64 @@
+1:Write a Java program to fetch data from web.xml to Servlet using ServletConfig.
+Ans => Fetch Data from web.xml using ServletConfig:
+Create a Servlet and override the init(ServletConfig config) method.
+Use the config object to access initialization parameters defined in the web.xml file.
+
+2:• Write a Java program to fetch data from web.xml to Servlet using
+ServletCotext.
+Ans => Fetch Data from web.xml using ServletContext:
+Create a Servlet and use the getServletContext() method to access the ServletContext.
+Use the ServletContext to retrieve data or attributes defined in the web.xml file.
+
+3:• Write a Java program to submit student information (fname, lname, email,
+mobile, gender, password) using jsp form to servlet. Fetch data at servlet and
+print all the data in console.
+Ans => Submit Student Information from JSP to Servlet:
+Create a JSP form that collects student information (fname, lname, email, mobile, gender, password).
+Create a Servlet to handle the form submission (use doPost() method).
+In the Servlet, retrieve the submitted data using request.getParameter() and print it to the console.
+
+4:• Write above Java program and print fetched data on another jsp using
+expression language.
+Ans => Print Fetched Data on Another JSP using Expression Language (EL):
+Create a separate JSP to display the fetched data.
+Use EL expressions to access and display the data passed from the Servlet.
+
+5:• Write a Java program to fetch all the data from database table and print on jsp
+page using JSTL SQL tag library.
+Ans => Fetch Data from Database Table and Print on JSP using JSTL SQL Tag Library:
+Configure your database connection in the web.xml file.
+Use JSTL SQL tags (<sql:setDataSource>, <sql:query>, etc.) to fetch data from the database.
+Display the retrieved data on a JSP page.
+
+6:• Write a Java program to validate jsp form server side.
+o First Name: Only Alphabets Last Name: Only Alphabets Mobile:
+Only 10 Numbers Email: Standard Email Id o Password:
+Minimum One 1 Upper, Minimum 1 Lower, Minimum 1 Digit,
+Minimum 1 Special Character from @, #, $, %, _, & I2. Write CRUD
+operation using jsp only.
+Ans => Server-Side Validation for JSP Form:
+Implement server-side validation logic in your Servlet.
+Validate each form field for the specified criteria (e.g., name, mobile, email, password).
+Return appropriate error messages to the JSP if validation fails.
+
+7:• Write a jsp/servlet CRUD operation for following. Student:
+a) Int id;(primary key, Auto Increment)
+b) String fname, lname, email, mobile, gender, password;
+c) Need to use bootstrap responsive template for the same.
+d) Use client side validation to for all data input.
+e) Use regular expression for email for standard email input.
+f) Use regular expression for password like(Test@123)
+g) Use server side validation (Filter) same as client side validation.
+h) All the inserted data should be show in show.jsp with edit and delete
+functionality.
+i) Store all the deleted record in table named deleted data."
+Ans =>CRUD Operations Using JSP:
+
+a)Implement CRUD operations (Create, Read, Update, Delete) in your Servlets.
+b)Create JSP pages for each operation (e.g., add.jsp, edit.jsp, delete.jsp).
+c)Use a database to store and retrieve student records.
+d)Implement client-side validation using JavaScript.
+e)Implement server-side validation using Filters.
+f)Display the data in a responsive Bootstrap template.
+g)Include edit and delete functionality on the show.jsp page.
+h)Optionally, store deleted records in a separate table named "deleted_data."
