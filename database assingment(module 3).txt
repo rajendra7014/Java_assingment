@@ -1,0 +1,298 @@
+
+a) Select unique job from EMP table.
+
+    SELECT DISTINCT Job FROM EMP;
+
+b) List the details of the emps in asc order of the Dptnos and desc of Jobs?
+
+SELECT * FROM EMP
+ORDER BY Deptno ASC, Job DESC;
+
+
+c) Display all the unique job groups in the descending order?
+
+SELECT DISTINCT Job FROM EMP
+ORDER BY Job DESC;
+
+
+d) List the emps who joined before 1981.
+
+SELECT * FROM EMP
+WHERE Hiredate < '1981-01-01';
+
+
+e) List the Empno, Ename, Sal, Daily sal of all emps in the asc order of Annsal.
+
+SELECT Empno, Ename, Sal, Sal/365 AS "Daily Sal", Sal*12 AS "Annual Sal"
+FROM EMP
+ORDER BY "Annual Sal" ASC;
+
+
+f) List the Empno, Ename, Sal, Exp of all emps working for Mgr 7369.
+
+SELECT Empno, Ename, Sal, YEAR(CURDATE()) - YEAR(Hiredate) AS "Exp"
+FROM EMP
+WHERE Mgr = 7369;
+
+
+g) Display all the details of the emps who’s Comm. Is more than their Sal?
+
+SELECT * FROM EMP
+WHERE Comm > Sal;
+
+
+h) List the emps who are either ‘CLERK’ or ‘ANALYST’ in the Desc order.
+
+SELECT * FROM EMP
+WHERE Job IN ('CLERK', 'ANALYST')
+ORDER BY Ename DESC;
+
+
+i) List the emps Who Annual sal ranging from 22000 and 45000.
+
+SELECT Empno, Ename, Sal, Sal*12 AS "Annual Sal"
+FROM EMP
+WHERE Sal*12 BETWEEN 22000 AND 45000;
+
+
+j) List the Enames those are starting with ‘S’ and with five characters.
+
+SELECT Ename FROM EMP
+WHERE Ename LIKE 'S____';
+
+
+k) List the emps whose Empno not starting with digit78.
+
+SELECT * FROM EMP
+WHERE NOT Empno LIKE '78%';
+
+
+l) List all the Clerks of Deptno 20.
+
+SELECT * FROM EMP
+WHERE Job = 'CLERK' AND Deptno = 20;
+
+
+m) List the Emps who are senior to their own MGRS.
+
+SELECT A.Empno, A.Ename, A.Hiredate, B.Empno AS MgrEmpno, B.Ename AS MgrEname
+FROM EMP A
+INNER JOIN EMP B ON A.Mgr = B.Empno
+WHERE A.Hiredate > B.Hiredate;
+
+
+n) List the Emps of Deptno 20 who’s Jobs are same as Deptno10.
+
+SELECT A.Empno, A.Ename, A.Job, A.Deptno AS EmpDeptno, B.Deptno AS JobDeptno
+FROM EMP A
+INNER JOIN DEPT B ON A.Deptno = B.Deptno
+WHERE A.Deptno = 20 AND A.Job = (SELECT Job FROM DEPT WHERE Deptno = 10);
+
+
+o) List the Emps who’s Sal is same as FORD or SMITH in desc order of Sal.
+
+SELECT * FROM EMP
+WHERE Sal = (SELECT Sal FROM EMP WHERE Ename = 'FORD')
+OR Sal = (SELECT Sal FROM EMP WHERE Ename = 'SMITH')
+ORDER BY Sal DESC;
+
+
+p) List the emps whose jobs same as SMITH or ALLEN.
+
+SELECT * FROM EMP
+WHERE Job IN ('SMITH', 'ALLEN');
+
+
+
+q) Any jobs of deptno 10 those that are not found in deptno 20.
+
+SELECT MAX(Sal) AS "Highest Salary" FROM EMP;
+
+
+r) Find the highest sal of EMP table.
+
+SELECT MAX(Sal) AS "Highest Salary" FROM EMP;
+
+
+s) Find details of highest paid employee.
+
+SELECT * FROM EMP
+WHERE Sal = (SELECT MAX(Sal) FROM EMP);
+
+
+t) Find the total sal given to the MGR.
+
+SELECT Mgr, SUM(Sal) AS "Total Salary"
+FROM EMP
+GROUP BY Mgr;
+
+
+u) List the emps whose names contains ‘A’.
+
+SELECT * FROM EMP
+WHERE Ename LIKE '%A%';
+
+
+v) Find all the emps who earn the minimum Salary for each job wise inascending order.
+
+SELECT Job, MIN(Sal) AS "Minimum Salary"
+FROM EMP
+GROUP BY Job
+ORDER BY "Minimum Salary" ASC;
+
+
+w) List the emps whose sal greater than Blake’s sal.
+
+SELECT * FROM EMP
+WHERE Sal > (SELECT Sal FROM EMP WHERE Ename = 'BLAKE');
+
+
+x) Create view v1 to select ename, job, dname, loc whose deptno are same.
+
+
+CREATE VIEW v1 AS
+SELECT E.Ename, E.Job, D.Dname, D.Loc
+FROM EMP E
+INNER JOIN DEPT D ON E.Deptno = D.Deptno;
+
+
+y) Create a procedure with dno as input parameter to fetch ename and dname.
+
+DELIMITER //
+CREATE PROCEDURE GetEmpDetails(IN dno INT)
+BEGIN
+  SELECT Ename, Dname
+  FROM EMP
+  JOIN DEPT ON EMP.Deptno = DEPT.Deptno
+  WHERE EMP.Deptno = dno;
+END //
+DELIMITER ;
+
+
+z) Add column Pin with bigint data type in table student. aa) Modify the student table to change the sname length from 14 to 40. Create trigger to insert datain emp_log table whenever any update of sal in EMP table. You can set action as ‘New Salary’.
+
+
+ALTER TABLE student
+ADD Pin BIGINT;
+
+
+
+ALTER TABLE student
+ALTER COLUMN sname VARCHAR(40);
+
+
+CREATE TRIGGER emp_salary_update_trigger
+AFTER UPDATE ON EMP
+FOR EACH ROW
+BEGIN
+    INSERT INTO emp_log (action, employee_id, old_salary, new_salary, change_date)
+    VALUES ('New Salary', OLD.employee_id, OLD.sal, NEW.sal, NOW());
+END;
+
+
+
+-----------------------------------------------------------------------------------------------------------
+   • Write swing example with database connectivity to achieve the following. 
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class RegistrationFormExample {
+    private JFrame frame;
+    private JTextField nameField, emailField;
+    private JPasswordField passwordField;
+    private JButton registerButton;
+    private JLabel messageLabel;
+
+    public RegistrationFormExample() {
+        // Initialize the JFrame
+        frame = new JFrame("Registration Form");
+        frame.setLayout(new FlowLayout());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 250);
+
+        // Create GUI components
+        nameField = new JTextField(20);
+        emailField = new JTextField(20);
+        passwordField = new JPasswordField(20);
+        registerButton = new JButton("Register");
+        messageLabel = new JLabel();
+
+        // Add components to the frame
+        frame.add(new JLabel("Name: "));
+        frame.add(nameField);
+        frame.add(new JLabel("Email: "));
+        frame.add(emailField);
+        frame.add(new JLabel("Password: "));
+        frame.add(passwordField);
+        frame.add(registerButton);
+        frame.add(messageLabel);
+
+        // Register action listener for the Register button
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                registerUser();
+            }
+        });
+
+        // Make the frame visible
+        frame.setVisible(true);
+    }
+
+    private void registerUser() {
+        String name = nameField.getText();
+        String email = emailField.getText();
+        char[] passwordChars = passwordField.getPassword();
+        String password = new String(passwordChars);
+
+        // Database connection parameters
+        String url = "jdbc:mysql://localhost:3306/registration";
+        String user = "your_username";
+        String dbPassword = "your_password";
+
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Connect to the database
+            Connection connection = DriverManager.getConnection(url, user, dbPassword);
+
+            // Prepare an SQL statement to insert user data
+            String insertQuery = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(3, password);
+
+            // Execute the insert statement
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                messageLabel.setText("Registration successful!");
+                // Clear the form
+                nameField.setText("");
+                emailField.setText("");
+                passwordField.setText("");
+            } else {
+                messageLabel.setText("Registration failed.");
+            }
+
+            // Close the database connection
+            preparedStatement.close();
+            connection.close();
+        } catch (ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace();
+            messageLabel.setText("Registration failed. Please try again later.");
+        }
+    }
+
+    public static void
+
+ 
